@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Menu, X } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
 
@@ -17,13 +18,17 @@ export default function Navbar() {
         <div className="flex justify-between h-16 items-center">
           
           {/* LOGO SECTION */}
-          <Link href="/" className="flex items-center gap-2 group">
-             {/* Logo Icon */}
-             <div className="w-8 h-8 rounded-lg transition-transform duration-300 group-hover:rotate-12
-               bg-acm-navy text-white flex items-center justify-center
-               dark:bg-acm-blue dark:text-white
-             ">
-               <span className="font-bold text-lg">S</span>
+          <Link href="/" className="flex items-center gap-4 group"> {/* Increased gap slightly */}
+             {/* Logo Image Container */}
+             <div className="relative w-14 h-14 transition-transform duration-300 group-hover:rotate-12 rounded-2xl overflow-hidden shadow-sm">
+               <Image 
+                 src="/clublogo.png" 
+                 alt="ACM SIGMOBILE Logo"
+                 fill
+                 className="object-cover" // Changed to object-cover for a better fill in the rounded shape
+                 priority
+                 unoptimized
+               />
              </div>
              
              {/* Text Logo */}
@@ -35,7 +40,7 @@ export default function Navbar() {
              </span>
           </Link>
 
-          {/* DESKTOP NAVIGATION (Hidden on Mobile) */}
+          {/* DESKTOP NAVIGATION */}
           <div className="hidden md:flex items-center space-x-8">
             {['Home', 'Events', 'Team'].map((item) => (
               <Link 
@@ -78,14 +83,13 @@ export default function Navbar() {
       </div>
 
       {/* MOBILE MENU DROPDOWN */}
-      {/* This creates a smooth slide-down effect */}
       <div className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-64 opacity-100' : 'max-h-0 opacity-0'}`}>
         <div className="px-4 pt-2 pb-6 space-y-2 bg-white/95 dark:bg-acm-dark/95 backdrop-blur-xl border-t border-gray-100 dark:border-gray-800">
           {['Home', 'Events', 'Team'].map((item) => (
             <Link 
               key={item}
               href={item === 'Home' ? '/' : `/${item.toLowerCase()}`}
-              onClick={() => setIsOpen(false)} // Close menu on click
+              onClick={() => setIsOpen(false)}
               className="block px-3 py-2 rounded-md text-base font-medium transition-colors
                 text-gray-700 hover:text-acm-blue hover:bg-blue-50
                 dark:text-gray-200 dark:hover:text-acm-cyan dark:hover:bg-white/5"

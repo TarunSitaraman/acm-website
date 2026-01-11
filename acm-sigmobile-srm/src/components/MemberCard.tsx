@@ -1,58 +1,52 @@
+import Image from 'next/image';
 import { Github, Linkedin, Mail } from 'lucide-react';
+import { TeamMember } from '@/lib/data';
 
-interface MemberProps {
-  name: string;
-  role: string;
-  image?: string;
-  github?: string;
-  linkedin?: string;
-}
+export default function MemberCard({ name, role, image, github, linkedin, imagePosition }: TeamMember) {
 
-export default function MemberCard({ name, role, image, github, linkedin }: MemberProps) {
   return (
-    <div className="member-card group">
-      <div className="member-content">
-        
-        {/* FRONT: The Member's Image */}
-        <div className="member-front">
-          {image ? (
-            <img src={image} alt={name} className="w-full h-full object-cover" />
-          ) : (
-            <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-800 flex items-center justify-center text-gray-500 font-medium">
-               No Image
-            </div>
-          )}
+    <div className="acm-card group mx-auto">
+      {/* Top Right Mail Icon */}
+      <div className="mail">
+        <Mail className="w-6 h-6" />
+      </div>
+
+      {/* Profile Picture Area */}
+      <div className="profile-pic">
+        {image ? (
+          <Image 
+            src={image} 
+            alt={name}
+            fill
+            // UPDATED: Now uses inline style for precise control
+            // defaults to 'center' if no position is provided
+            style={{ objectPosition: imagePosition || 'center' }}
+            className="object-cover transition-all duration-500 ease-in-out"
+            sizes="(max-width: 768px) 100vw, 350px"
+            priority={false} 
+          />
+        ) : (
+          <div className="w-full h-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-500">
+            No Image
+          </div>
+        )}
+      </div>
+
+      {/* Sliding Bottom Section */}
+      <div className="bottom">
+        <div className="content">
+          <span className="name">{name}</span>
+          <span className="about-me">{role}</span>
         </div>
-
-        {/* BACK: The Details with Glowing Animation */}
-        <div className="member-back">
-          {/* Animated Background Blobs */}
-          <div className="circle" id="bottom"></div>
-          <div className="circle" id="right"></div>
-          
-          <div className="member-back-content p-4 text-center">
-            {/* Role Badge */}
-            <span className="bg-acm-cyan/20 text-acm-cyan text-xs font-bold px-3 py-1 rounded-full backdrop-blur-md border border-acm-cyan/30 shadow-[0_0_10px_rgba(0,174,239,0.2)]">
-              {role}
-            </span>
-
-            {/* Name */}
-            <h3 className="text-lg font-bold text-white mt-3 tracking-wide">{name}</h3>
-            
-            <p className="text-gray-400 text-[10px] uppercase tracking-wider mb-4">ACM SIGMOBILE</p>
-
-            {/* Social Icons */}
-            <div className="flex gap-4 justify-center mt-auto mb-2">
-               <a href={github || "#"} className="text-gray-300 hover:text-acm-cyan transition-colors hover:scale-110 transform duration-200">
-                 <Github className="w-5 h-5" />
-               </a>
-               <a href={linkedin || "#"} className="text-gray-300 hover:text-acm-cyan transition-colors hover:scale-110 transform duration-200">
-                 <Linkedin className="w-5 h-5" />
-               </a>
-               <a href="#" className="text-gray-300 hover:text-acm-cyan transition-colors hover:scale-110 transform duration-200">
-                 <Mail className="w-5 h-5" />
-               </a>
-            </div>
+        
+        <div className="bottom-bottom">
+          <div className="social-links-container">
+            <a href={github || "#"} target="_blank" rel="noopener noreferrer">
+               <Github className="cursor-pointer hover:text-acm-navy transition-colors" />
+            </a>
+            <a href={linkedin || "#"} target="_blank" rel="noopener noreferrer">
+               <Linkedin className="cursor-pointer hover:text-acm-navy transition-colors" />
+            </a>
           </div>
         </div>
       </div>

@@ -5,7 +5,7 @@ export const upcomingEvents = [
     date: "March 15, 2026",
     location: "Tech Park, SRM IST",
     description: "A 24-hour hackathon to build the next generation of mobile applications.",
-    image: "/images/hackathon.jpg", // Make sure to add dummy images in public folder later
+    image: "/images/hackathon.jpg", 
     registrationLink: "#"
   },
   {
@@ -34,26 +34,85 @@ export const pastEvents = [
   }
 ];
 
-export const teamData = [
+// --- TYPE DEFINITIONS ---
+export type TeamMember = {
+  name: string;
+  role: string;
+  image: string;
+  github?: string;
+  linkedin?: string;
+  imagePosition?: string; 
+};
+
+export type TeamDomain = {
+  domain: string;
+  members: TeamMember[];
+};
+
+// --- TEAM DATA ---
+// Added ': TeamDomain[]' here to ensure type safety
+export const teamData: TeamDomain[] = [
   {
-    domain: "Core Board",
+    domain: "Creatives",
     members: [
-      { name: "Tarun", role: "Secretary", image: "" }, 
-      { name: "Aditya", role: "President", image: "" },
+      { 
+        name: "Mugesh", 
+        role: "Chair", 
+        image: "/team/mugesh.jpg", 
+        github: "#",
+        linkedin: "#",
+        imagePosition: "center"
+      },
+      { 
+        name: "Eric", 
+        role: "Board Member",
+        image: "/team/eric.jpg",
+        github: "#",
+        linkedin: "#", 
+        imagePosition: "bottom"
+      },
     ]
   },
   {
     domain: "Technical",
     members: [
-      { name: "Riya", role: "Tech Lead", image: "" },
-      { name: "Sam", role: "App Dev", image: "" },
+      { 
+        name: "Tarun Sitaraman", 
+        role: "Secretary", 
+        image: "/team/tarun.jpg",
+        github: "https://github.com/TarunSitaraman",
+        linkedin: "https://www.linkedin.com/in/tarun-sitaraman/",
+        imagePosition: "center"
+      },
+      { 
+        name: "Sreecharan R", 
+        role: "Web Master", 
+        image: "/team/sreecharan.jpg",
+        github: "#",
+        linkedin: "#",
+        imagePosition: "center"
+      },
     ]
   },
   {
-    domain: "Creatives",
+    domain: "Non-Technical",
     members: [
-      { name: "Priya", role: "Design Head", image: "" },
-      { name: "Rahul", role: "Video Editor", image: "" },
+      { 
+        name: "Utkarsh Vaibhav", 
+        role: "Treasurer", 
+        image: "/team/utkarsh.jpg",
+        github: "#",
+        linkedin: "#",
+        imagePosition: "top" 
+      },
+      { 
+        name: "Soham", 
+        role: "Membership Chair", 
+        image: "/team/soham.jpg",
+        github: "#",
+        linkedin: "#",
+        imagePosition: "center"
+      },
     ]
   }
 ];
