@@ -11,7 +11,7 @@
 @variant dark (&:where(.dark, .dark *));
 
 body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  /* Font is now handled by layout.tsx */
   background-color: #f8fafc; 
   color: #1e293b;
 }
@@ -20,6 +20,18 @@ body {
   background-color: var(--color-acm-dark);
   color: #f1f5f9;
 }
+
+/* --- COLOR FIX: HEADINGS IN DARK MODE --- */
+/* This forces H1-H6 to be white in dark mode, fixing the invisible text issue */
+:root.dark h1, 
+:root.dark h2, 
+:root.dark h3, 
+:root.dark h4, 
+:root.dark h5, 
+:root.dark h6 {
+  color: #ffffff;
+}
+/* --------------------------------------- */
 
 /* --- TOGGLE SWITCH --- */
 .toggle-scale { transform: scale(0.6); transform-origin: center; }
@@ -60,7 +72,6 @@ body {
   background-color: #f1f5f9;
 }
 
-/* REMOVED 'object-position' FROM HERE TO LET REACT HANDLE IT */
 .acm-card .profile-pic img {
   object-fit: cover; width: 100%; height: 100%; transition: all 0.5s ease-in-out 0s;
 }
