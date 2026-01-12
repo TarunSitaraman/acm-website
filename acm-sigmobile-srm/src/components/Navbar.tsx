@@ -1,112 +1,110 @@
 "use client";
 
-import { useState } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { Menu, X } from 'lucide-react';
-import ThemeToggle from './ThemeToggle';
+import Link from "next/link";
+import { useState } from "react";
+import { Menu, X } from "lucide-react";
+import Image from "next/image";
+import { LiquidGlassCard } from '@/components/ui/liquid-glass';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="sticky top-0 z-50 transition-colors duration-500 backdrop-blur-md border-b
-      bg-white/80 border-gray-200 
-      dark:bg-acm-dark/80 dark:border-gray-800
-    ">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16 items-center">
+    <header className="fixed top-6 left-0 right-0 z-50 flex justify-center px-4">
+      
+      <LiquidGlassCard
+        glowIntensity="md"
+        shadowIntensity="md"
+        borderRadius="100px"
+        blurIntensity="md"
+        // Changed max-w-4xl to max-w-5xl for more horizontal breathing room
+        className="w-full max-w-5xl p-2" 
+      >
+        {/* Increased vertical padding to py-3 to accommodate larger logo */}
+        <nav className="flex items-center justify-between px-6 py-3">
           
-          {/* LOGO SECTION */}
-          <Link href="/" className="flex items-center gap-4 group"> {/* Increased gap slightly */}
-             {/* Logo Image Container */}
-             <div className="relative w-14 h-14 transition-transform duration-300 group-hover:rotate-12 rounded-2xl overflow-hidden shadow-sm">
-               <Image 
-                 src="/clublogo.png" 
-                 alt="ACM SIGMOBILE Logo"
-                 fill
-                 className="object-cover" // Changed to object-cover for a better fill in the rounded shape
-                 priority
-                 unoptimized
-               />
-             </div>
-             
-             {/* Text Logo */}
-             <span className="text-xl font-bold tracking-tight transition-colors duration-300
-               text-acm-navy 
-               dark:text-white
-             ">
-               ACM <span className="text-acm-blue dark:text-acm-cyan">SIGMOBILE</span>
-             </span>
+          {/* Logo Section */}
+          <Link href="/" className="flex items-center gap-4 group">
+            {/* UPDATED: 
+               1. w-16 h-16 (64px) - Much larger logo container
+               2. rounded-full + overflow-hidden cuts the image
+            */}
+            <div className="relative w-16 h-16 rounded-full overflow-hidden border border-white/10 group-hover:scale-105 transition-transform shadow-sm">
+              <Image 
+                src="/logo.png" 
+                alt="ACM Logo" 
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 64px, 64px"
+              />
+            </div>
+            {/* Increased text size to text-xl to match new logo size */}
+            <span className="font-bold text-xl text-white tracking-wide">
+              ACM <span className="text-acm-cyan">SIGMOBILE</span>
+            </span>
           </Link>
 
-          {/* DESKTOP NAVIGATION */}
-          <div className="hidden md:flex items-center space-x-8">
-            {['Home', 'Events', 'Team'].map((item) => (
-              <Link 
-                key={item} 
-                href={item === 'Home' ? '/' : `/${item.toLowerCase()}`} 
-                className="font-medium transition-colors duration-300
-                  text-gray-600 hover:text-acm-blue 
-                  dark:text-gray-300 dark:hover:text-acm-cyan"
-              >
-                {item}
-              </Link>
-            ))}
+          {/* Desktop Links */}
+          <div className="hidden md:flex items-center gap-2">
+            <NavLink href="/">Home</NavLink>
+            <NavLink href="/events">Events</NavLink>
+            <NavLink href="/team">Team</NavLink>
             
-            {/* Theme Toggle Switch */}
-            <div className="pl-2 border-l border-gray-300 dark:border-gray-700 h-6 flex items-center">
-               <ThemeToggle />
-            </div>
-
-            <button className="px-5 py-2 rounded-full font-medium transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5
-              bg-acm-navy text-white hover:bg-acm-blue shadow-blue-900/10
-              dark:bg-acm-cyan dark:text-acm-navy dark:hover:bg-white dark:shadow-blue-500/20"
-            >
-              Join Chapter
-            </button>
-          </div>
-
-          {/* MOBILE MENU BUTTON */}
-          <div className="md:hidden flex items-center gap-4">
-            <ThemeToggle />
-            <button 
-              onClick={() => setIsOpen(!isOpen)}
-              className="p-2 rounded-md transition-colors
-                text-gray-700 hover:bg-gray-100 
-                dark:text-gray-200 dark:hover:bg-white/10"
-            >
-              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* MOBILE MENU DROPDOWN */}
-      <div className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-64 opacity-100' : 'max-h-0 opacity-0'}`}>
-        <div className="px-4 pt-2 pb-6 space-y-2 bg-white/95 dark:bg-acm-dark/95 backdrop-blur-xl border-t border-gray-100 dark:border-gray-800">
-          {['Home', 'Events', 'Team'].map((item) => (
             <Link 
-              key={item}
-              href={item === 'Home' ? '/' : `/${item.toLowerCase()}`}
-              onClick={() => setIsOpen(false)}
-              className="block px-3 py-2 rounded-md text-base font-medium transition-colors
-                text-gray-700 hover:text-acm-blue hover:bg-blue-50
-                dark:text-gray-200 dark:hover:text-acm-cyan dark:hover:bg-white/5"
-            >
-              {item}
-            </Link>
-          ))}
-          <div className="pt-4">
-            <button className="w-full text-center py-3 rounded-xl font-bold transition-colors
-              bg-acm-navy text-white
-              dark:bg-acm-cyan dark:text-acm-navy"
+              href="/join" 
+              // Increased padding (px-8 py-3) and text size
+              className="ml-6 bg-white/10 hover:bg-white/20 text-white px-8 py-3 rounded-full font-semibold transition-all border border-white/10 hover:shadow-[0_0_20px_rgba(0,181,247,0.3)] backdrop-blur-md"
             >
               Join Chapter
-            </button>
+            </Link>
           </div>
+
+          {/* Mobile Menu Toggle */}
+          <button 
+            className="md:hidden text-white p-2"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            {isOpen ? <X size={32} /> : <Menu size={32} />} 
+          </button>
+        </nav>
+      </LiquidGlassCard>
+
+      {/* Mobile Menu Dropdown */}
+      {isOpen && (
+        <div className="absolute top-32 left-4 right-4 md:hidden">
+          <LiquidGlassCard borderRadius="24px" className="p-4 flex flex-col gap-2">
+            <MobileNavLink href="/" onClick={() => setIsOpen(false)}>Home</MobileNavLink>
+            <MobileNavLink href="/events" onClick={() => setIsOpen(false)}>Events</MobileNavLink>
+            <MobileNavLink href="/team" onClick={() => setIsOpen(false)}>Team</MobileNavLink>
+            <MobileNavLink href="/join" onClick={() => setIsOpen(false)}>Join Chapter</MobileNavLink>
+          </LiquidGlassCard>
         </div>
-      </div>
-    </nav>
+      )}
+    </header>
+  );
+}
+
+// Helper Components
+function NavLink({ href, children }: { href: string, children: React.ReactNode }) {
+  return (
+    <Link 
+      href={href} 
+      // Changed text-sm to text-base (standard size)
+      className="text-white/80 hover:text-white hover:bg-white/10 px-6 py-3 rounded-full transition-all text-base font-medium"
+    >
+      {children}
+    </Link>
+  );
+}
+
+function MobileNavLink({ href, onClick, children }: any) {
+  return (
+    <Link 
+      href={href} 
+      onClick={onClick}
+      className="block text-center text-white py-4 hover:bg-white/10 rounded-xl transition-colors text-lg"
+    >
+      {children}
+    </Link>
   );
 }
