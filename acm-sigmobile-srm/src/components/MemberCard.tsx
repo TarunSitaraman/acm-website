@@ -1,53 +1,70 @@
+"use client";
+
 import Image from 'next/image';
 import { Github, Linkedin, Mail } from 'lucide-react';
 import { TeamMember } from '@/lib/data';
 
-export default function MemberCard({ name, role, image, github, linkedin, imagePosition }: TeamMember) {
+// Import the CSS file directly
+import './MemberCard.css'; 
+
+// Ensure 'email' is included in props if it exists in your data type
+export default function MemberCard({ name, role, image, github, linkedin, imagePosition, email }: TeamMember & { email?: string }) {
 
   return (
-    <div className="acm-card group mx-auto">
-      {/* Top Right Mail Icon */}
-      <div className="mail">
-        <Mail className="w-6 h-6" />
-      </div>
+    <div className="container">
+      
+      <div className="canvas">
+        {/* Trackers */}
+        {[...Array(25)].map((_, i) => (
+          <div key={i} className={`tracker tr-${i + 1}`}></div>
+        ))}
 
-      {/* Profile Picture Area */}
-      <div className="profile-pic">
-        {image ? (
-          <Image 
-            src={image} 
-            alt={name}
-            fill
-            // UPDATED: Now uses inline style for precise control
-            // defaults to 'center' if no position is provided
-            style={{ objectPosition: imagePosition || 'center' }}
-            className="object-cover transition-all duration-500 ease-in-out"
-            sizes="(max-width: 768px) 100vw, 350px"
-            priority={false} 
-          />
-        ) : (
-          <div className="w-full h-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-500">
-            No Image
+        {/* Card Body */}
+        <div className="cardBody">
+          
+          {/* Profile Image */}
+          <div className="imageWrapper">
+            {image ? (
+              <Image 
+                src={image} 
+                alt={name}
+                fill
+                style={{ objectPosition: imagePosition || 'center' }}
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 300px"
+                priority={false} 
+              />
+            ) : (
+              <div className="w-full h-full bg-gray-800 flex items-center justify-center text-gray-500">
+                No Image
+              </div>
+            )}
           </div>
-        )}
-      </div>
 
-      {/* Sliding Bottom Section */}
-      <div className="bottom">
-        <div className="content">
-          <span className="name">{name}</span>
-          <span className="about-me">{role}</span>
-        </div>
-        
-        <div className="bottom-bottom">
-          <div className="social-links-container">
-            <a href={github || "#"} target="_blank" rel="noopener noreferrer">
-               <Github className="cursor-pointer hover:text-acm-navy transition-colors" />
-            </a>
-            <a href={linkedin || "#"} target="_blank" rel="noopener noreferrer">
-               <Linkedin className="cursor-pointer hover:text-acm-navy transition-colors" />
-            </a>
+          {/* Text Content */}
+          <div className="content">
+            <span className="name">{name}</span>
+            <span className="role">{role}</span>
+            
+            {/* Social Links */}
+            <div className="socials">
+              {github && github !== "#" && (
+                <a href={github} target="_blank" rel="noopener noreferrer" className="text-white hover:text-[#00ffaa] transition-colors hover:scale-110">
+                   <Github size={20} />
+                </a>
+              )}
+              {linkedin && linkedin !== "#" && (
+                <a href={linkedin} target="_blank" rel="noopener noreferrer" className="text-white hover:text-[#00ffaa] transition-colors hover:scale-110">
+                   <Linkedin size={20} />
+                </a>
+              )}
+              {/* Uses email prop if available, or falls back to generic ACM mail */}
+              <a href={`mailto:${email || 'contact@acm.org'}`} className="text-white hover:text-[#00ffaa] transition-colors hover:scale-110">
+                 <Mail size={20} />
+              </a>
+            </div>
           </div>
+
         </div>
       </div>
     </div>
