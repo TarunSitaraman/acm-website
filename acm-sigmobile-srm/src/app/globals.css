@@ -1,19 +1,23 @@
 @import "tailwindcss";
-@import "tw-animate-css";
 
-/* --- 1. CRITICAL SCROLLING FIX --- */
-/* This forces the browser to allow scrolling */
+/* If you have installed 'tailwindcss-animate', uncomment the line below. 
+   If not, leave it commented to prevent build errors. */
+/* @plugin "tailwindcss-animate"; */
+
+/* --- CRITICAL LAYOUT RESET --- */
+/* We disable the window scrollbar so the <main> tag in layout.tsx handles scrolling. */
 html, body {
   height: 100%;
-  min-height: 100vh;
-  overflow-y: auto; /* ENABLES VERTICAL SCROLL */
-  overflow-x: hidden; /* Prevents horizontal scrollbar */
-  scroll-behavior: smooth;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* DISABLES WINDOW SCROLL */
   background-color: var(--color-background);
   color: var(--color-foreground);
+  -webkit-font-smoothing: antialiased;
 }
 
-/* --- 2. THEME CONFIGURATION (Tailwind v4) --- */
+/* --- THEME CONFIGURATION --- */
 @theme {
   --color-acm-blue: #0091da;
   --color-acm-navy: #002855;
@@ -21,7 +25,7 @@ html, body {
   --color-acm-dark: #0f172a; 
   --color-acm-card: #1e293b; 
 
-  /* Shadcn / System Colors */
+  /* Shadcn Colors Mapped */
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -63,17 +67,15 @@ html, body {
   --color-sidebar-ring: var(--sidebar-ring); 
 }
 
-/* --- 3. CUSTOM VARIANTS --- */
+/* --- CUSTOM VARIANTS --- */
 @custom-variant dark (&:is(.dark *));
 @variant dark (&:where(.dark, .dark *));
 
-/* --- 4. COLOR VARIABLES --- */
+/* --- COLOR VARIABLES --- */
 :root {
   --radius: 0.625rem;
-  --background: #f8fafc; /* Light bg */
-  --foreground: #1e293b; /* Light text */
-  
-  /* Shadcn Light Variables */
+  --background: #f8fafc;
+  --foreground: #1e293b;
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
@@ -106,10 +108,8 @@ html, body {
 }
 
 .dark {
-  --background: #0f172a; /* Dark bg */
-  --foreground: #f1f5f9; /* Dark text */
-
-  /* Shadcn Dark Variables */
+  --background: #0f172a;
+  --foreground: #f1f5f9;
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
@@ -141,14 +141,28 @@ html, body {
   --sidebar-ring: oklch(0.556 0 0); 
 }
 
-/* --- 5. DARK MODE FIXES --- */
+/* --- DARK MODE FIXES --- */
 :root.dark h1, :root.dark h2, :root.dark h3, :root.dark h4, :root.dark h5, :root.dark h6 {
   color: #ffffff;
 }
 
-/* --- 6. CUSTOM COMPONENT STYLES --- */
+/* --- CUSTOM SCROLLBAR --- */
+.scroll-smooth::-webkit-scrollbar, 
+main::-webkit-scrollbar {
+  width: 8px;
+}
+main::-webkit-scrollbar-track {
+  background: transparent;
+}
+main::-webkit-scrollbar-thumb {
+  background-color: rgba(156, 163, 175, 0.5);
+  border-radius: 20px;
+}
+main::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(156, 163, 175, 0.8);
+}
 
-/* Toggle Switch */
+/* --- COMPONENT STYLES --- */
 .toggle-scale { transform: scale(0.6); transform-origin: center; }
 .container { display: flex; align-items: center; justify-content: center; }
 .label {
@@ -168,40 +182,33 @@ html, body {
   left: 10px; box-shadow: 0 2px 1px rgba(0, 0, 0, 0.3), 10px 10px 10px rgba(0, 0, 0, 0.3); transition: 0.4s;
 }
 
-/* Card Styles */
+/* ACM Card Styles */
 .acm-card {
   width: 320px; height: 320px; background: white; border-radius: 32px; padding: 3px; position: relative;
   box-shadow: rgba(0, 145, 218, 0.1) 0px 70px 30px -50px; transition: all 0.5s ease-in-out; display: block; 
 }
-
 :root.dark .acm-card { background: var(--color-acm-card); box-shadow: none; }
-
 .acm-card .mail { position: absolute; right: 2rem; top: 1.4rem; background: transparent; border: none; z-index: 10; cursor: pointer; }
 .acm-card .mail svg { stroke: var(--color-acm-blue); stroke-width: 3px; transition: 0.3s; }
 .acm-card .mail svg:hover { stroke: var(--color-acm-navy); }
-
 .acm-card .profile-pic {
   position: absolute; width: calc(100% - 6px); height: calc(100% - 6px); top: 3px; left: 3px; border-radius: 29px;
   z-index: 1; border: 0px solid var(--color-acm-blue); overflow: hidden;
   transition: all 0.5s ease-in-out 0.2s, z-index 0.5s ease-in-out 0.2s;
   background-color: #f1f5f9;
 }
-
 .acm-card .profile-pic img {
   object-fit: cover; width: 100%; height: 100%; transition: all 0.5s ease-in-out 0s;
 }
-
 .acm-card .bottom {
   position: absolute; bottom: 3px; left: 3px; right: 3px; background: var(--color-acm-blue);
   top: 80%; border-radius: 29px; z-index: 2;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 5px 5px 0px inset; overflow: hidden;
   transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1) 0s;
 }
-
 .acm-card .bottom .content { position: absolute; bottom: 0; left: 1.5rem; right: 1.5rem; height: 160px; }
 .acm-card .bottom .content .name { display: block; font-size: 1.2rem; color: white; font-weight: bold; }
 .acm-card .bottom .content .about-me { display: block; font-size: 0.9rem; color: rgba(255, 255, 255, 0.8); margin-top: 0.5rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
-
 .acm-card .bottom .bottom-bottom {
   position: absolute; bottom: 1.5rem; left: 1.5rem; right: 1.5rem; display: flex; align-items: center; justify-content: center;
 }
@@ -210,7 +217,6 @@ html, body {
   height: 24px; width: 24px; color: white; filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.1)); transition: 0.3s;
 }
 .acm-card .bottom .bottom-bottom .social-links-container svg:hover { color: var(--color-acm-navy); transform: scale(1.2); }
-
 .acm-card:hover { border-top-left-radius: 55px; }
 .acm-card:hover .bottom { top: 20%; border-radius: 80px 29px 29px 29px; transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1) 0.2s; }
 .acm-card:hover .profile-pic {
@@ -221,7 +227,7 @@ html, body {
 .acm-card:hover .profile-pic:hover { transform: scale(1.1); }
 .acm-card:hover .profile-pic img { transform: scale(1.5); object-position: top center; transition: all 0.5s ease-in-out 0.5s; }
 
-/* --- 7. FINAL BASE LAYER --- */
+/* --- BASE LAYER --- */
 @layer base {
   * {
     border-color: var(--border);
@@ -231,4 +237,4 @@ html, body {
     background-color: var(--background);
     color: var(--foreground);
   }
-} 
+}

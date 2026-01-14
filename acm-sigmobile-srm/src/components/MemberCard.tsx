@@ -2,71 +2,127 @@
 
 import Image from 'next/image';
 import { Github, Linkedin, Mail } from 'lucide-react';
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { TeamMember } from '@/lib/data';
 
-// Import the CSS file directly
-import './MemberCard.css'; 
-
-// Ensure 'email' is included in props if it exists in your data type
+// Extended prop type to include optional email
 export default function MemberCard({ name, role, image, github, linkedin, imagePosition, email }: TeamMember & { email?: string }) {
+  
+  // Motion values for tilt effect
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  // Smooth spring physics for the tilt (prevents jitter)
+  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], ["15deg", "-15deg"]), { stiffness: 150, damping: 20 });
+  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], ["-15deg", "15deg"]), { stiffness: 150, damping: 20 });
+
+  // Handle mouse movement for tilt
+  function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    
+    // Calculate mouse position relative to card center
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    
+    const xPct = mouseX / width - 0.5;
+    const yPct = mouseY / height - 0.5;
+
+    x.set(xPct);
+    y.set(yPct);
+  }
+
+  // Reset tilt when mouse leaves
+  function handleMouseLeave() {
+    x.set(0);
+    y.set(0);
+  }
 
   return (
-    <div className="container">
-      
-      <div className="canvas">
-        {/* Trackers */}
-        {[...Array(25)].map((_, i) => (
-          <div key={i} className={`tracker tr-${i + 1}`}></div>
-        ))}
-
-        {/* Card Body */}
-        <div className="cardBody">
-          
-          {/* Profile Image */}
-          <div className="imageWrapper">
+    <motion.div 
+      className="relative w-[280px] h-[350px] cursor-pointer perspective-1000"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      initial="initial"
+      whileHover="hover"
+    >
+      {/* The 3D Card */}
+      <motion.div 
+        style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+        className="w-full h-full bg-gradient-to-br from-[#1a1a1a] to-[#262626] rounded-[24px] border border-white/10 shadow-xl relative overflow-hidden group"
+      >
+        
+        {/* Profile Image */}
+        <div className="absolute inset-0 z-0 h-full w-full">
             {image ? (
-              <Image 
-                src={image} 
-                alt={name}
-                fill
-                style={{ objectPosition: imagePosition || 'center' }}
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 300px"
-                priority={false} 
-              />
+                <Image 
+                    src={image} 
+                    alt={name}
+                    fill
+                    style={{ objectPosition: imagePosition || 'center' }}
+                    className="object-cover opacity-90 group-hover:scale-105 transition-transform duration-500 ease-out"
+                    sizes="(max-width: 768px) 100vw, 300px"
+                />
             ) : (
-              <div className="w-full h-full bg-gray-800 flex items-center justify-center text-gray-500">
-                No Image
-              </div>
+                <div className="w-full h-full bg-gray-800 flex items-center justify-center text-gray-500">
+                  No Image
+                </div>
             )}
-          </div>
-
-          {/* Text Content */}
-          <div className="content">
-            <span className="name">{name}</span>
-            <span className="role">{role}</span>
-            
-            {/* Social Links */}
-            <div className="socials">
-              {github && github !== "#" && (
-                <a href={github} target="_blank" rel="noopener noreferrer" className="text-white hover:text-[#00ffaa] transition-colors hover:scale-110">
-                   <Github size={20} />
-                </a>
-              )}
-              {linkedin && linkedin !== "#" && (
-                <a href={linkedin} target="_blank" rel="noopener noreferrer" className="text-white hover:text-[#00ffaa] transition-colors hover:scale-110">
-                   <Linkedin size={20} />
-                </a>
-              )}
-              {/* Uses email prop if available, or falls back to generic ACM mail */}
-              <a href={`mailto:${email || 'contact@acm.org'}`} className="text-white hover:text-[#00ffaa] transition-colors hover:scale-110">
-                 <Mail size={20} />
-              </a>
-            </div>
-          </div>
-
+            {/* Gradient Overlay for Text Readability */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
         </div>
-      </div>
-    </div>
+
+        {/* Text Content Area */}
+        <div className="absolute bottom-0 left-0 w-full p-6 translate-z-20 transform z-20">
+            <h3 className="text-2xl font-extrabold text-white mb-1 drop-shadow-md tracking-wide">
+              {name}
+            </h3>
+            <p className="text-[#00ffaa] font-bold tracking-widest text-xs uppercase mb-4">
+              {role}
+            </p>
+            
+            {/* Social Icons - Now Fully Clickable! */}
+            <motion.div 
+                className="flex gap-4 items-center"
+                variants={{
+                    initial: { opacity: 0, y: 20 },
+                    hover: { opacity: 1, y: 0 }
+                }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+            >
+                {github && (
+                    <a 
+                      href={github} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="p-2 bg-white/10 rounded-full hover:bg-white/20 hover:text-[#00ffaa] hover:scale-110 transition-all text-white backdrop-blur-md"
+                      onClick={(e) => e.stopPropagation()} 
+                    >
+                        <Github size={20} />
+                    </a>
+                )}
+                {linkedin && (
+                    <a 
+                      href={linkedin} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="p-2 bg-white/10 rounded-full hover:bg-white/20 hover:text-[#00ffaa] hover:scale-110 transition-all text-white backdrop-blur-md"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                        <Linkedin size={20} />
+                    </a>
+                )}
+                <a 
+                  href={`mailto:${email || 'contact@acm.org'}`} 
+                  className="p-2 bg-white/10 rounded-full hover:bg-white/20 hover:text-[#00ffaa] hover:scale-110 transition-all text-white backdrop-blur-md"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                    <Mail size={20} />
+                </a>
+            </motion.div>
+        </div>
+      </motion.div>
+    </motion.div>
   );
 }

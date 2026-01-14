@@ -1,3 +1,5 @@
+"use client";
+
 import MemberCard from '@/components/MemberCard';
 import { teamData } from '@/lib/data';
 
@@ -20,7 +22,7 @@ export default function TeamPage() {
           {teamData.map((domain) => (
             <div key={domain.domain} className="animate-in fade-in slide-in-from-bottom-8 duration-700">
               
-              {/* Domain Title (The Layout You Wanted) */}
+              {/* Domain Title */}
               <div className="flex items-center mb-16">
                 <h2 className="text-3xl font-bold text-acm-navy dark:text-white mr-6 bg-white dark:bg-acm-card px-6 py-2 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 whitespace-nowrap">
                   {domain.domain}
@@ -28,8 +30,7 @@ export default function TeamPage() {
                 <div className="h-[2px] bg-gradient-to-r from-gray-200 to-transparent dark:from-gray-800 flex-grow"></div>
               </div>
               
-              {/* Card Grid - SWITCHED TO GRID FOR STABILITY */}
-              {/* This ensures cards are always 280px wide and centered */}
+              {/* Card Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 justify-items-center">
                 {domain.members.map((member, index) => (
                   <MemberCard 

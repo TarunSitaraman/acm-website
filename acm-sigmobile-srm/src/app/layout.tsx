@@ -21,18 +21,26 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning> 
       <body className={`${font.className} antialiased bg-gray-50 dark:bg-acm-dark text-gray-900 dark:text-gray-100 transition-colors duration-500`}>
         <ThemeProvider>
-          {/* 1. The Fixed Navbar (Floats on top) */}
-          <Navbar />
           
+          {/* FRAME: Locks the screen height */}
+          <div className="flex flex-col h-screen w-full overflow-hidden">
+            
+            {/* 1. HEADER: Solid block at the top */}
+            {/* z-50 ensures dropdowns appear over content */}
+            <div className="flex-none z-50 relative">
+              <Navbar />
+            </div>
 
-          <div className="w-full h-32 md:h-40 pointer-events-none bg-transparent" aria-hidden="true" />
+            {/* 2. MAIN: The scrollable area */}
+            <main className="flex-1 overflow-y-auto scroll-smooth relative w-full scrollbar-hide">
+              <div className="min-h-full flex flex-col">
+                {children}
+                <Footer />
+              </div>
+            </main>
 
-          {/* 3. The Page Content */}
-          <main className="min-h-screen relative z-0">
-            {children}
-          </main>
-          
-          <Footer />
+          </div>
+
         </ThemeProvider>
       </body>
     </html>

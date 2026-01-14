@@ -10,26 +10,22 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <header className="fixed top-6 left-0 right-0 z-50 flex justify-center px-4">
+    // UPDATED: Removed 'fixed top-6...'. Now it is 'w-full relative'.
+    // This forces it to occupy physical space, pushing content down.
+    <header className="w-full relative z-50 flex justify-center px-4 py-4 bg-gray-50/50 dark:bg-acm-dark/50 backdrop-blur-sm">
       
       <LiquidGlassCard
         glowIntensity="md"
         shadowIntensity="md"
         borderRadius="100px"
         blurIntensity="md"
-        // Changed max-w-4xl to max-w-5xl for more horizontal breathing room
         className="w-full max-w-5xl p-2" 
       >
-        {/* Increased vertical padding to py-3 to accommodate larger logo */}
-        <nav className="flex items-center justify-between px-6 py-3">
+        <nav className="flex items-center justify-between px-6 py-2">
           
           {/* Logo Section */}
           <Link href="/" className="flex items-center gap-4 group">
-            {/* UPDATED: 
-               1. w-16 h-16 (64px) - Much larger logo container
-               2. rounded-full + overflow-hidden cuts the image
-            */}
-            <div className="relative w-16 h-16 rounded-full overflow-hidden border border-white/10 group-hover:scale-105 transition-transform shadow-sm">
+            <div className="relative w-12 h-12 md:w-16 md:h-16 rounded-full overflow-hidden border border-white/10 group-hover:scale-105 transition-transform shadow-sm">
               <Image 
                 src="/logo.png" 
                 alt="ACM Logo" 
@@ -38,8 +34,7 @@ export default function Navbar() {
                 sizes="(max-width: 768px) 64px, 64px"
               />
             </div>
-            {/* Increased text size to text-xl to match new logo size */}
-            <span className="font-bold text-xl text-white tracking-wide">
+            <span className="font-bold text-lg md:text-xl text-white tracking-wide">
               ACM <span className="text-acm-cyan">SIGMOBILE</span>
             </span>
           </Link>
@@ -52,7 +47,6 @@ export default function Navbar() {
             
             <Link 
               href="/join" 
-              // Increased padding (px-8 py-3) and text size
               className="ml-6 bg-white/10 hover:bg-white/20 text-white px-8 py-3 rounded-full font-semibold transition-all border border-white/10 hover:shadow-[0_0_20px_rgba(0,181,247,0.3)] backdrop-blur-md"
             >
               Join Chapter
@@ -71,8 +65,8 @@ export default function Navbar() {
 
       {/* Mobile Menu Dropdown */}
       {isOpen && (
-        <div className="absolute top-32 left-4 right-4 md:hidden">
-          <LiquidGlassCard borderRadius="24px" className="p-4 flex flex-col gap-2">
+        <div className="absolute top-full left-4 right-4 mt-2 md:hidden z-50">
+          <LiquidGlassCard borderRadius="24px" className="p-4 flex flex-col gap-2 shadow-2xl">
             <MobileNavLink href="/" onClick={() => setIsOpen(false)}>Home</MobileNavLink>
             <MobileNavLink href="/events" onClick={() => setIsOpen(false)}>Events</MobileNavLink>
             <MobileNavLink href="/team" onClick={() => setIsOpen(false)}>Team</MobileNavLink>
@@ -89,7 +83,6 @@ function NavLink({ href, children }: { href: string, children: React.ReactNode }
   return (
     <Link 
       href={href} 
-      // Changed text-sm to text-base (standard size)
       className="text-white/80 hover:text-white hover:bg-white/10 px-6 py-3 rounded-full transition-all text-base font-medium"
     >
       {children}

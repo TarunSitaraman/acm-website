@@ -65,7 +65,7 @@ export const teamData: TeamDomain[] = [
       },
       { 
         name: "Eric", 
-        role: "Board Member",
+        role: "Vice Chair",
         image: "/team/eric.jpg",
         github: "#",
         linkedin: "#", 
