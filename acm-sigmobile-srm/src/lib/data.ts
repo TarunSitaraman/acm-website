@@ -1,36 +1,19 @@
 export const upcomingEvents = [
-  {
-    id: 1,
-    title: "Mobile App Hackathon 2026",
-    date: "March 15, 2026",
-    location: "Tech Park, SRM IST",
-    description: "A 24-hour hackathon to build the next generation of mobile applications.",
-    image: "/images/hackathon.jpg", 
-    registrationLink: "#"
-  },
-  {
-    id: 2,
-    title: "5G & Beyond Workshop",
-    date: "April 10, 2026",
-    location: "Mini Hall 2",
-    description: "Hands-on session with industry experts on 5G network architecture.",
-    image: "/images/workshop.jpg",
-    registrationLink: "#"
-  }
+  
 ];
 
 export const pastEvents = [
   {
     id: 101,
-    title: "Intro to Flutter",
-    date: "Nov 20, 2025",
-    description: "Beginner friendly workshop on cross-platform development."
+    title: "IOT Workshop",
+    date: "Aug 20, 2025",
+    description: "Beginner friendly workshop on the basics of IOT."
   },
   {
     id: 102,
-    title: "Android Dev Boot",
-    date: "Oct 05, 2025",
-    description: "Deep dive into Kotlin and Jetpack Compose."
+    title: "Hack for Humanity Hackathon",
+    date: "Aug 31-Sep 2 2025",
+    description: " A 36-hour hackathon focused on building solutions for social good."
   }
 ];
 

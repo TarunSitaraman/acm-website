@@ -1,28 +1,25 @@
 "use client";
 
 import Image from 'next/image';
-import { Github, Linkedin, Mail } from 'lucide-react';
+import { Github, Linkedin } from 'lucide-react'; // Removed 'Mail'
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { TeamMember } from '@/lib/data';
 
-// Extended prop type to include optional email
-export default function MemberCard({ name, role, image, github, linkedin, imagePosition, email }: TeamMember & { email?: string }) {
+export default function MemberCard({ name, role, image, github, linkedin, imagePosition }: TeamMember) {
   
   // Motion values for tilt effect
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  // Smooth spring physics for the tilt (prevents jitter)
+  // Smooth spring physics for the tilt
   const rotateX = useSpring(useTransform(y, [-0.5, 0.5], ["15deg", "-15deg"]), { stiffness: 150, damping: 20 });
   const rotateY = useSpring(useTransform(x, [-0.5, 0.5], ["-15deg", "15deg"]), { stiffness: 150, damping: 20 });
 
-  // Handle mouse movement for tilt
   function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
     const rect = e.currentTarget.getBoundingClientRect();
     const width = rect.width;
     const height = rect.height;
     
-    // Calculate mouse position relative to card center
     const mouseX = e.clientX - rect.left;
     const mouseY = e.clientY - rect.top;
     
@@ -33,7 +30,6 @@ export default function MemberCard({ name, role, image, github, linkedin, imageP
     y.set(yPct);
   }
 
-  // Reset tilt when mouse leaves
   function handleMouseLeave() {
     x.set(0);
     y.set(0);
@@ -47,7 +43,6 @@ export default function MemberCard({ name, role, image, github, linkedin, imageP
       initial="initial"
       whileHover="hover"
     >
-      {/* The 3D Card */}
       <motion.div 
         style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
         className="w-full h-full bg-gradient-to-br from-[#1a1a1a] to-[#262626] rounded-[24px] border border-white/10 shadow-xl relative overflow-hidden group"
@@ -69,11 +64,10 @@ export default function MemberCard({ name, role, image, github, linkedin, imageP
                   No Image
                 </div>
             )}
-            {/* Gradient Overlay for Text Readability */}
             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
         </div>
 
-        {/* Text Content Area */}
+        {/* Text Content */}
         <div className="absolute bottom-0 left-0 w-full p-6 translate-z-20 transform z-20">
             <h3 className="text-2xl font-extrabold text-white mb-1 drop-shadow-md tracking-wide">
               {name}
@@ -82,7 +76,7 @@ export default function MemberCard({ name, role, image, github, linkedin, imageP
               {role}
             </p>
             
-            {/* Social Icons - Now Fully Clickable! */}
+            {/* Social Icons (GitHub & LinkedIn only) */}
             <motion.div 
                 className="flex gap-4 items-center"
                 variants={{
@@ -113,13 +107,6 @@ export default function MemberCard({ name, role, image, github, linkedin, imageP
                         <Linkedin size={20} />
                     </a>
                 )}
-                <a 
-                  href={`mailto:${email || 'contact@acm.org'}`} 
-                  className="p-2 bg-white/10 rounded-full hover:bg-white/20 hover:text-[#00ffaa] hover:scale-110 transition-all text-white backdrop-blur-md"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                    <Mail size={20} />
-                </a>
             </motion.div>
         </div>
       </motion.div>
