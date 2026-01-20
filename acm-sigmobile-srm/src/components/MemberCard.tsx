@@ -1,11 +1,12 @@
 "use client";
 
 import Image from 'next/image';
-import { Github, Linkedin } from 'lucide-react'; // Removed 'Mail'
+// Removed lucide-react import completely as it is no longer needed
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { TeamMember } from '@/lib/data';
 
-export default function MemberCard({ name, role, image, github, linkedin, imagePosition }: TeamMember) {
+// Removed 'github' and 'linkedin' from the destructured props
+export default function MemberCard({ name, role, image, imagePosition }: TeamMember) {
   
   // Motion values for tilt effect
   const x = useMotionValue(0);
@@ -72,42 +73,9 @@ export default function MemberCard({ name, role, image, github, linkedin, imageP
             <h3 className="text-2xl font-extrabold text-white mb-1 drop-shadow-md tracking-wide">
               {name}
             </h3>
-            <p className="text-[#00ffaa] font-bold tracking-widest text-xs uppercase mb-4">
+            <p className="text-[#00ffaa] font-bold tracking-widest text-xs uppercase">
               {role}
             </p>
-            
-            {/* Social Icons (GitHub & LinkedIn only) */}
-            <motion.div 
-                className="flex gap-4 items-center"
-                variants={{
-                    initial: { opacity: 0, y: 20 },
-                    hover: { opacity: 1, y: 0 }
-                }}
-                transition={{ duration: 0.3, ease: "easeOut" }}
-            >
-                {github && (
-                    <a 
-                      href={github} 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      className="p-2 bg-white/10 rounded-full hover:bg-white/20 hover:text-[#00ffaa] hover:scale-110 transition-all text-white backdrop-blur-md"
-                      onClick={(e) => e.stopPropagation()} 
-                    >
-                        <Github size={20} />
-                    </a>
-                )}
-                {linkedin && (
-                    <a 
-                      href={linkedin} 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      className="p-2 bg-white/10 rounded-full hover:bg-white/20 hover:text-[#00ffaa] hover:scale-110 transition-all text-white backdrop-blur-md"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                        <Linkedin size={20} />
-                    </a>
-                )}
-            </motion.div>
         </div>
       </motion.div>
     </motion.div>
